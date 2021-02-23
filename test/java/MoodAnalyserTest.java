@@ -1,40 +1,65 @@
 import org.junit.Assert;
 import org.junit.Test;
-import java.lang.Exception;
+import org.junit.rules.ExpectedException;
+
 public class MoodAnalyserTest
 {
     @Test
     public void givenMessageWhenSad_ShouldReturnSad()
     {
-        try {
-            MoodAnalyser moodAnalyser = new MoodAnalyser("This is a Sad Message");
-            String mood = moodAnalyser.analyseMood();
-            Assert.assertEquals("SAD", mood);
-        }
-        catch(MoodAnalyserException e)
+        MoodAnalyser moodAnalyser = new MoodAnalyser("This is a Sad Message");
+        String mood = null;
+        try
         {
-            System.out.println("Wrong Input Type");
+            mood = moodAnalyser.analyseMood();
         }
+        catch(MoodAnalyserException exception)
+        {
+            exception.printStackTrace();
+        }
+        Assert.assertEquals("SAD", mood);
     }
     @Test
-    public void givenMessageWhenNotSad_ShouldReturnHappy() {
-        try {
-            MoodAnalyser moodAnalyser = new MoodAnalyser("This is a Happy Message");
-            String mood = moodAnalyser.analyseMood();
-            Assert.assertEquals("HAPPY", mood);
-        } catch (MoodAnalyserException e) {
-            System.out.println("Wrong Input Type");
-        }
-    }
-    @Test
-    public void givenNullMood_ShouldReturnHappy()
+    public void givenMessageWhenNotSad_ShouldReturnHappy()
     {
-        try{
+            MoodAnalyser moodAnalyser = new MoodAnalyser("This is a Happy Message");
+            String mood = null;
+            try {
+                mood = moodAnalyser.analyseMood();
+            } catch (MoodAnalyserException exception) {
+                exception.printStackTrace();
+            }
+            Assert.assertEquals("HAPPY", mood);
+    }
+
+    @Test
+    public void givenNullMood_ShouldReturnException()
+    {
         MoodAnalyser moodAnalyser = new MoodAnalyser(null);
-        String mood = moodAnalyser.analyseMood();
-        Assert.assertEquals("HAPPY",mood);
-        } catch (MoodAnalyserException e) {
-            System.out.println("Wrong Input Type");
+
+            try
+            {
+                ExpectedException exceptionRule = ExpectedException.none();
+                exceptionRule.expect(MoodAnalyserException.class);
+                moodAnalyser.analyseMood();
+            }
+            catch(MoodAnalyserException exception) {
+                Assert.assertEquals(MoodAnalyserException.ExceptionType.nullEnter, exception.type);
+            }
+    }
+
+    @Test
+    public void givenEmptyMood_ShouldReturnException()
+    {
+        MoodAnalyser moodAnalyser = new MoodAnalyser("");
+        try
+        {
+            ExpectedException exceptionRule = ExpectedException.none();
+            exceptionRule.expect(MoodAnalyserException.class);
+            moodAnalyser.analyseMood();
+        }
+        catch(MoodAnalyserException exception) {
+            Assert.assertEquals(MoodAnalyserException.ExceptionType.emptyEnter, exception.type);
         }
     }
 }

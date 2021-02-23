@@ -2,11 +2,13 @@ class MoodAnalyserException extends Exception
 {
     enum ExceptionType
     {
-        NullType
+        nullEnter,emptyEnter
     }
-    public MoodAnalyserException(String message)
+    ExceptionType type;
+    public MoodAnalyserException(ExceptionType type,String message)
     {
         super(message);
+        this.type = type;
     }
 }
 

@@ -3,8 +3,8 @@ public class MoodAnalyser {
     private String message;
 
     //Default Constructor
-    //public MoodAnalyser() {
-    //}
+    public MoodAnalyser() {
+    }
 
     //Parametrised Constructor
     public MoodAnalyser(String message) {
@@ -20,12 +20,14 @@ public class MoodAnalyser {
     public String analyseMood() throws MoodAnalyserException
     {
         try {
+            if(message.length() == 0)
+                throw new MoodAnalyserException(MoodAnalyserException.ExceptionType.emptyEnter,"Please Enter Valid Data");
             if (message.contains("Sad"))
                 return "SAD";
             else
                 return "HAPPY";
-        } catch (NullPointerException e) {
-            throw new MoodAnalyserException("Value is Null::Enter Valid MEssage");
+        } catch (NullPointerException expection) {
+            throw new MoodAnalyserException(MoodAnalyserException.ExceptionType.nullEnter,"Please Enter Valid Data");
 
         }
     }
